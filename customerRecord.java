@@ -1,3 +1,4 @@
+package logic;
 import java.util.Scanner;
 
 
@@ -11,7 +12,7 @@ public class customerRecord{
         this.id = empty;
     }
 
-    public customerRecord(String fName, String lName, String email, String phone, String address, int age, String id)
+    public customerRecord(String fName, String lName, int age, String address, String phone, String email, String id)
     {
         this.fName = fName;
         this.lName = lName;
