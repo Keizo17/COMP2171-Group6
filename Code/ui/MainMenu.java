@@ -36,55 +36,55 @@ public class MainMenu extends JPanel{
     	
         pnlCommand = new JPanel();
         pnlDisplay = new JPanel();
-        pnlCommand.setPreferredSize(new Dimension(720,280));
+        pnlCommand.setPreferredSize(new Dimension(180,100));
         BoxLayout menuLayout = new BoxLayout(pnlCommand, BoxLayout.PAGE_AXIS);
         pnlCommand.setLayout(menuLayout);
         
         cmdAddCustomer  = new JButton("Add New Customer");
         cmdEditCustomer  = new JButton("Edit Customer Record");
-        cmdAddProduct  = new JButton("Add New Product");
-        cmdEditProduct  = new JButton("Edit Product Record");
-        cmdProcessOrder  = new JButton("Process Orders");
-        cmdDeliverySchedule  = new JButton("View Delivery Schedule");
+        //cmdAddProduct  = new JButton("Add New Product");
+        //cmdEditProduct  = new JButton("Edit Product Record");
+        //cmdProcessOrder  = new JButton("Process Orders");
+        //cmdDeliverySchedule  = new JButton("View Delivery Schedule");
         cmdClose   = new JButton("Close");
 
         //button commands
         cmdAddCustomer.addActionListener(new AddCustomerButtonListener());
         cmdEditCustomer.addActionListener(new EditCustomerButtonListener());
-        cmdAddProduct.addActionListener(new AddProductButtonListener());
-        cmdEditProduct.addActionListener(new EditProductButtonListener());
-        cmdProcessOrder.addActionListener(new ProcessOrderButtonListener());
-        cmdDeliverySchedule.addActionListener(new DeliveryScheduleButtonListener());
+        //cmdAddProduct.addActionListener(new AddProductButtonListener());
+        //cmdEditProduct.addActionListener(new EditProductButtonListener());
+        //cmdProcessOrder.addActionListener(new ProcessOrderButtonListener());
+        //cmdDeliverySchedule.addActionListener(new DeliveryScheduleButtonListener());
         cmdClose.addActionListener(new CloseButtonListener());
         
         cmdAddCustomer.setBackground(Color.white);
         cmdEditCustomer.setBackground(Color.white);
-        cmdAddProduct.setBackground(Color.white);
-        cmdEditProduct.setBackground(Color.white);
-        cmdProcessOrder.setBackground(Color.white);
-        cmdDeliverySchedule.setBackground(Color.white);
+        //cmdAddProduct.setBackground(Color.white);
+        //cmdEditProduct.setBackground(Color.white);
+        //cmdProcessOrder.setBackground(Color.white);
+        //cmdDeliverySchedule.setBackground(Color.white);
         cmdClose.setBackground(Color.red);
         pnlCommand.setBackground(Color.white);
         pnlDisplay.setBackground(Color.white);
         
         pnlCommand.add(cmdAddCustomer);
         pnlCommand.add(cmdEditCustomer);
-        pnlCommand.add(cmdAddProduct);
-        pnlCommand.add(cmdEditProduct);
-        pnlCommand.add(cmdProcessOrder);
-        pnlCommand.add(cmdDeliverySchedule);
+        //pnlCommand.add(cmdAddProduct);
+        //pnlCommand.add(cmdEditProduct);
+        //pnlCommand.add(cmdProcessOrder);
+        //pnlCommand.add(cmdDeliverySchedule);
         pnlCommand.add(cmdClose);
         
         ////
         
-        ImageIcon logo = new ImageIcon("icons/logosmall.png");
-        JLabel label = new JLabel("", logo, JLabel.NORTH_EAST);
-        add(label);
+        //ImageIcon logo = new ImageIcon("icons/logosmall.png");
+        //JLabel label = new JLabel("", logo, JLabel.NORTH_EAST);
+        //add(label);
         add(pnlCommand);
         add(pnlDisplay);
     }
     
-    public static void createAndShowGUI() {
+    static void createAndShowGUI() {
         //Create and set up the window.
         frame = new JFrame("T'Curly Manager Main Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,21 +101,21 @@ public class MainMenu extends JPanel{
     }
     
     public static void main(String[] args) {
-        new EntryScreen();
-        //AddProduct ap = new AddProduct();
-        //Product p = AddProduct.A
+        //new EntryScreen();
+    	createAndShowGUI();
     }
     
     public class AddCustomerButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) { //listener for AddCustomer button, initiates when button is clicked
-    		new customerRegisterUI().addCustomerUI();
+    		new CustomerRegisterUI().addCustomerUI();
             frame.setVisible(false);
     	}
     }
     
     public class EditCustomerButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for EditCustomer button, initiates when button is clicked
-    		//function_call();
+    		new CustomerEditUI().findCustomer();
+    		frame.setVisible(false);
     	}
     }
     
