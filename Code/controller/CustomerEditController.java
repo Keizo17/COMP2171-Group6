@@ -13,6 +13,7 @@ public class CustomerEditController {
 	private List<customerRecord> custList;
 	
 	public ArrayList<Boolean> updateCustomer(String cFName, String cLName, int cAge, String cAddr, String cTelNum, String cEmail, String cID) {
+		createCustList();
 		this.customer = new customerRecord(cFName, cLName, cAge, cAddr, cTelNum, cEmail, cID);
 		ArrayList<Boolean> valid = validateCustomer(customer);
 		if (valid.contains(false)) {
@@ -24,7 +25,7 @@ public class CustomerEditController {
 	}
 	
 	public void createCustList() {
-		custList = new CustomerList().readFile();
+		this.custList = new CustomerList().readFile();
 	}
 	
 	private ArrayList<Boolean> validateCustomer(customerRecord cust) {
