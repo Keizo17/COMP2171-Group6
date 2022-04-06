@@ -1,0 +1,6 @@
+test Product!Test brand!Test Description!1200!4
+Test Product One!Test Brand!Test Test Test Test!1000!13
+Test Product Two!Test Brand!Test test test test!2000!5
+Another Test Product!Test Brand!This is a test, so not much is to be said.!3000!4
+Final Test Product!Test!This is a test, so not much is to be said.!4560!23
+Aussie Miracle Moist Conditioner!Aussie!Conditions and softens hair to improve manageability!1250!6
