@@ -2,7 +2,6 @@ package ui;
 
 import java.util.*;
 import java.util.List;
-import java.io.File;
 import javax.swing.*;
 
 import controller.ProductEditController;
@@ -20,8 +19,8 @@ public class ProductEditUI extends JFrame implements ActionListener{
         
     private JLabel name;
     private JTextField pname;
-    private JLabel id;
-    private JTextField pID;
+    private JLabel brand;
+    private JTextField pbrand;
     private JLabel desc;
     private JTextArea pdesc;
     private JLabel price;
@@ -78,19 +77,19 @@ public class ProductEditUI extends JFrame implements ActionListener{
           pname.setLocation(250, 100);
           container.add(pname);
           
-          id = new JLabel("Product ID");
-          id.setFont(new Font("Arial", Font.BOLD, 20));
-          id.setForeground(lpink);
-          id.setSize(100, 20);
-          id.setLocation(100, 150);
-          container.add(id);
+          brand = new JLabel("Brand");
+          brand.setFont(new Font("Arial", Font.BOLD, 20));
+          brand.setForeground(lpink);
+          brand.setSize(100, 20);
+          brand.setLocation(100, 150);
+          container.add(brand);
  
-          pID = new JTextField();
-          pID.setFont(new Font("Arial", Font.PLAIN, 15));
-          pID.setBackground(Color.white);
-          pID.setSize(190, 20);
-          pID.setLocation(250, 150);
-          container.add(pID);
+          pbrand = new JTextField();
+          pbrand.setFont(new Font("Arial", Font.PLAIN, 15));
+          pbrand.setBackground(Color.white);
+          pbrand.setSize(190, 20);
+          pbrand.setLocation(250, 150);
+          container.add(pbrand);
 
           desc = new JLabel("Details");
           desc.setFont(new Font("Arial", Font.BOLD, 20));
@@ -189,25 +188,29 @@ public class ProductEditUI extends JFrame implements ActionListener{
     }
     
     public void actionPerformed(ActionEvent event){
-
+    	String oldname = searchbar.getText();
+    	
         if (event.getSource() == submitBtn){
-            valid = new ProductRegisterController().createProduct(pname.getText(), pID.getText(), pprice.getText(), 
-            		pstockc.getText(), pdesc.getText());
-            if(valid == false) {
-            	
-            }
-            else{
-              String res ="";
-              pname.setText(res);
-              pID.setText(res);
-              pprice.setText(res);
-              pstockc.setText(res);
-              pdesc.setText(res);  
-              }
+        	if (oldname.isEmpty()){
+        		notify.setText("Please search for the product you would like to edit.");
+        	}else { 
+        		valid = new ProductEditController().updateProduct(pname.getText(), pbrand.getText(), pprice.getText(), 
+            		pstockc.getText(), pdesc.getText(), oldname);
+        	    if(valid == false) {
+        	    	System.out.println("Something went wrong...");
+        	    }else{
+        	    	String res ="";
+        	    	pname.setText(res);
+        	    	pbrand.setText(res);
+        	    	pprice.setText(res);
+        	    	pstockc.setText(res);
+        	    	pdesc.setText(res);  
+        	    }
+        	}
         }else if (event.getSource() == resetBtn){
               String res ="";
               pname.setText(res);
-              pID.setText(res);
+              pbrand.setText(res);
               pprice.setText(res);
               pstockc.setText(res);
               pdesc.setText(res);
@@ -217,20 +220,20 @@ public class ProductEditUI extends JFrame implements ActionListener{
             container.setVisible(false);
             dispose();
         }else{
-        	String id = searchbar.getText();
         
-        	if (id.isEmpty()){
+        	if (oldname.isEmpty()){
         		notify.setText("Please enter the ID you would like to search.");
         	}else {
         		String blank ="";
         		pname.setText(blank);
-        		pID.setText(blank);
+        		pbrand.setText(blank);
         		pdesc.setText(blank);
         		pprice.setText(blank);
         		pstockc.setText(blank);
             
-        		notify.setText(new ProductEditController().findID(id));
-        	}
+        		notify.setText(new ProductEditController().findID(oldname));
+        		}
+        	
         }
     }
 }

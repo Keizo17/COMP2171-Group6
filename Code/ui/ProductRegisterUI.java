@@ -19,8 +19,8 @@ public class ProductRegisterUI extends JFrame implements ActionListener {
       private JLabel name;
       private JTextField pname;
       
-      private JLabel id;
-      private JTextField pID;
+      private JLabel brand;
+      private JTextField pbrand;
       
       private JLabel desc;
       private JTextArea pdesc;
@@ -30,8 +30,6 @@ public class ProductRegisterUI extends JFrame implements ActionListener {
       
       private JLabel stockc;
       private JTextField pstockc;
-      
-      private JTextField searchtxt;
       
       
       private JButton submit;
@@ -79,19 +77,19 @@ public class ProductRegisterUI extends JFrame implements ActionListener {
           pname.setLocation(250, 100);
           container.add(pname);
           
-          id = new JLabel("Product ID");
-          id.setFont(new Font("Arial", Font.BOLD, 20));
-          id.setForeground(lpink);
-          id.setSize(100, 20);
-          id.setLocation(100, 150);
-          container.add(id);
+          brand = new JLabel("Brand");
+          brand.setFont(new Font("Arial", Font.BOLD, 20));
+          brand.setForeground(lpink);
+          brand.setSize(100, 20);
+          brand.setLocation(100, 150);
+          container.add(brand);
  
-          pID = new JTextField();
-          pID.setFont(new Font("Arial", Font.PLAIN, 15));
-          pID.setBackground(Color.white);
-          pID.setSize(190, 20);
-          pID.setLocation(250, 150);
-          container.add(pID);
+          pbrand = new JTextField();
+          pbrand.setFont(new Font("Arial", Font.PLAIN, 15));
+          pbrand.setBackground(Color.white);
+          pbrand.setSize(190, 20);
+          pbrand.setLocation(250, 150);
+          container.add(pbrand);
 
           desc = new JLabel("Details");
           desc.setFont(new Font("Arial", Font.BOLD, 20));
@@ -180,7 +178,7 @@ public class ProductRegisterUI extends JFrame implements ActionListener {
           public void actionPerformed(ActionEvent event){
 
             if (event.getSource() == submit){
-                valid = new ProductRegisterController().createProduct(pname.getText(), pID.getText(), pprice.getText(), 
+                valid = new ProductRegisterController().createProduct(pname.getText(), pbrand.getText(), pprice.getText(), 
                 		pstockc.getText(), pdesc.getText());
                 if(valid == false) {
                 	
@@ -188,7 +186,7 @@ public class ProductRegisterUI extends JFrame implements ActionListener {
                 else{
                   String res ="";
                   pname.setText(res);
-                  pID.setText(res);
+                  pbrand.setText(res);
                   pprice.setText(res);
                   pstockc.setText(res);
                   pdesc.setText(res);  
@@ -196,7 +194,7 @@ public class ProductRegisterUI extends JFrame implements ActionListener {
             }else if (event.getSource() == reset){
                   String res ="";
                   pname.setText(res);
-                  pID.setText(res);
+                  pbrand.setText(res);
                   pprice.setText(res);
                   pstockc.setText(res);
                   pdesc.setText(res);
