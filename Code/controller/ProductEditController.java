@@ -10,7 +10,6 @@ import database.ProductList;
 public class ProductEditController {
 	private productRecord product;
 	private List<productRecord> prodList;
-	//private newName, newBran
 	private int index;
 	
 	public Boolean updateProduct(String pName, String pBrand, String pPrice, String pStock, String pNote, String oldname) {
@@ -46,7 +45,7 @@ public class ProductEditController {
 	
 	private boolean isDuplicate(String prodname) {
 		for(int i = 0; i < prodList.size(); i++) {
-			if(prodList.get(i).getProdname().equalsIgnoreCase(prodname)){
+			if(prodList.get(i).getProdname().equalsIgnoreCase(prodname) && i != index){
 				return true;
 			}
 		}
