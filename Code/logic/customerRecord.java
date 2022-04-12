@@ -1,12 +1,9 @@
 package logic;
-import java.util.Scanner;
-
 
 public class customerRecord{
 
     private String fName, lName, email, pNum, address, id;
-    private int age;
-    private Scanner scanner = new Scanner(System.in);  
+    private int age;  
 
     public customerRecord(String empty){
         this.id = empty;
@@ -44,4 +41,7 @@ public class customerRecord{
         return this.id;
     }
 
+    public String toString() {
+    	return ""+fName+"!"+lName+"!"+email+"!"+pNum+"!"+address+"!"+age+"!"+id+"\n";
+    }
 }
