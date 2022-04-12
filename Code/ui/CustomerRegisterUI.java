@@ -283,4 +283,31 @@ public class CustomerRegisterUI extends JFrame{
 
    }
 
+   public String getProdPrice(String pro){
+       try{
+           BufferedReader reader = new BufferedReader(new FileReader("Products.txt"));
+           String line;
+           int i = 0;
+           List<String> lstproduct = new ArrayList<String>();
+           line = reader.readLine();
+
+           while(line!= null){
+               
+               lstproduct.add(line);
+               
+               String[] product = lstproduct.get(i).split("!");
+               if(pro.equals(product[0])){
+                   String price = product[3];
+                   return price;
+                   
+               }
+               i = i + 1;
+               line = reader.readLine();
+           }
+           reader.close();
+           
+       
+       }catch(Exception e){System.out.println("An Exception Happened");}
+	return pro;
+   }
 }
