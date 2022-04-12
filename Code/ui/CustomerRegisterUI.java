@@ -1,29 +1,21 @@
 package ui;
 
-import java.util.*;
-import java.util.List;
-import java.io.File;
 import javax.swing.*;
 
 import controller.CustomerRegisterController;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.*;
 import java.awt.event.*;
 
-public class CustomerRegisterUI extends JFrame{
-	private CustomerRegisterController control;
-	private ArrayList<Boolean> validList = new ArrayList<Boolean>();
-    static File file = new File("Customers.txt");
-    String input;
-
-    private Container container;
+public class CustomerRegisterUI extends JFrame implements ActionListener {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private boolean valid;
+	
+	private Container container;
     private JLabel title;
         
     private JLabel fNameLabel;
@@ -177,7 +169,7 @@ public class CustomerRegisterUI extends JFrame{
           submitBtn.setBackground(lpink);
           submitBtn.setSize(340, 50);
           submitBtn.setLocation(100, 450);
-          submitBtn.addActionListener(new submitButtonListener());
+          submitBtn.addActionListener(this);
           container.add(submitBtn);
   
           resetBtn = new JButton("Reset");
@@ -186,7 +178,7 @@ public class CustomerRegisterUI extends JFrame{
           resetBtn.setBackground(dpink);
           resetBtn.setSize(340, 50);
           resetBtn.setLocation(100, 520);
-          resetBtn.addActionListener(new resetButtonListener());
+          resetBtn.addActionListener(this);
           container.add(resetBtn);
           
           notify = new JTextArea();
@@ -202,7 +194,7 @@ public class CustomerRegisterUI extends JFrame{
 
           backIcon = new ImageIcon("icons/exit.png");
           backBtn= new JButton   ("", backIcon);
-          backBtn.addActionListener(new CloseButtonListener());
+          backBtn.addActionListener(this);
           backBtn.setSize(100, 70);
           backBtn.setBackground(lpink);
           backBtn.setLocation(700, 500);
@@ -211,103 +203,41 @@ public class CustomerRegisterUI extends JFrame{
         setVisible(true);
    }
    
-   public void notifyUser(ArrayList<Boolean> validList) {
-	   if (validList.get(0) == false){
-           notify.setText("The submitted first name is not valid. Only letters and certain symbols are permitted.");
-           fNameField.setBackground(lpink);
-       }else if (validList.get(1) == false){
-           notify.setText("The submitted last name is not valid. Only letters and certain symbols are permitted.");
-           lNameField.setBackground(lpink);
-       }else if (validList.get(5) == false){
-           notify.setText("The submitted email is not valid. Please ensure you added the domain.");
-           emailField.setBackground(lpink);
-       }else if (validList.get(4) == false){
-           notify.setText("The submitted phone number is not valid. Must be 7 or 10 digits and begin with valid digits.");
-           pNumField.setBackground(lpink);
-       }else if (validList.get(3) == false){
-           notify.setText("The submitted email is not valid. Please emsure you added the street and number.");
-           addressField.setBackground(lpink);
-       }else if (validList.get(2) == false){
-           notify.setText("The submitted age name is not valid. Please ensure it is an integer between 0 and 130.");
-           ageField.setBackground(lpink);
-       }else if (validList.get(6) == false){
-           notify.setText("The submitted ID name is not valid. Please ensure it includes a letter or a number.");
-           idField.setBackground(lpink);
-       }else{
-           resetFields();
-           }
-   }
-   
-   public void resetFields() {
-	   String blank ="";
-       fNameField.setText(blank);
-       lNameField.setText(blank);
-       emailField.setText(blank);
-       pNumField.setText(blank);
-       addressField.setText(blank);
-       ageField.setText(blank);
-       idField.setText(blank);
-   }
+   public void actionPerformed(ActionEvent event){
 
-   
-   public class submitButtonListener implements ActionListener{
-	   public void actionPerformed(ActionEvent e) {
-		   String fName = fNameField.getText();
-           String lName = lNameField.getText();
-           String email = emailField.getText();
-           String pNum = pNumField.getText();
-           String address = addressField.getText();
-           int age = Integer.parseInt(ageField.getText());
-           String id = idField.getText();
-           notify.setText("");
-           
-		   //control.createCustomer(fName, lName, age, address, pNum, email, id);
-           validList = new CustomerRegisterController().createCustomer(fName, lName, age, address, pNum, email, id);
-	   }
-   }
-   
-   public class resetButtonListener implements ActionListener{
-	   public void actionPerformed(ActionEvent e) {
-		   resetFields();
-	   }
-   }
-   
-   public class CloseButtonListener implements ActionListener
-   {
-       public void actionPerformed(ActionEvent e)//listener for Close button, initiates when button is clicked
-       {
-       	MainMenu.createAndShowGUI();
+	   String res ="";
+       if (event.getSource() == submitBtn){
+           valid = new CustomerRegisterController().createCustomer(fNameField.getText(), lNameField.getText(), ageField.getText()
+        		   , addressField.getText(), pNumField.getText(), emailField.getText(), idField.getText());
+           if(valid == false) {
+        	   notify.setText("Something went wrong...");
+           }
+           else{
+        	   
+             fNameField.setText(res);
+             lNameField.setText(res);
+             emailField.setText(res);
+             pNumField.setText(res);
+             addressField.setText(res);
+             ageField.setText(res);
+             idField.setText(res);  
+             }
+       }else if (event.getSource() == resetBtn){
+             
+             fNameField.setText(res);
+             lNameField.setText(res);
+             emailField.setText(res);
+             pNumField.setText(res);
+             addressField.setText(res);
+             ageField.setText(res);
+             idField.setText(res);
+       }else if (event.getSource() == backBtn){	
+    	   
+           MainMenu.createAndShowGUI();
            container.setVisible(false);
            dispose();
        }
 
-   }
+     }
 
-   public String getProdPrice(String pro){
-       try{
-           BufferedReader reader = new BufferedReader(new FileReader("Products.txt"));
-           String line;
-           int i = 0;
-           List<String> lstproduct = new ArrayList<String>();
-           line = reader.readLine();
-
-           while(line!= null){
-               
-               lstproduct.add(line);
-               
-               String[] product = lstproduct.get(i).split("!");
-               if(pro.equals(product[0])){
-                   String price = product[3];
-                   return price;
-                   
-               }
-               i = i + 1;
-               line = reader.readLine();
-           }
-           reader.close();
-           
-       
-       }catch(Exception e){System.out.println("An Exception Happened");}
-	return pro;
-   }
 }

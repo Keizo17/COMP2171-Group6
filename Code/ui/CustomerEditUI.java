@@ -1,27 +1,21 @@
 package ui;
 
-import java.util.*;
-import java.util.List;
-import java.io.File;
 import javax.swing.*;
 
 import controller.CustomerEditController;
-import controller.CustomerRegisterController;
+
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.*;
 import java.awt.event.*;
 
 
-public class CustomerEditUI extends JFrame{
-	private Scanner scan = new Scanner(System.in);
-	private ArrayList<Boolean> validList = new ArrayList<Boolean>();
+public class CustomerEditUI extends JFrame implements ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private boolean valid;
 
     private Container container;
     private JLabel title;
@@ -180,7 +174,7 @@ public class CustomerEditUI extends JFrame{
           submitBtn.setBackground(lpink);
           submitBtn.setSize(340, 50);
           submitBtn.setLocation(100, 450);
-          submitBtn.addActionListener(new submitButtonListener());
+          submitBtn.addActionListener(this);
           container.add(submitBtn);
   
           resetBtn = new JButton("Reset");
@@ -189,7 +183,7 @@ public class CustomerEditUI extends JFrame{
           resetBtn.setBackground(dpink);
           resetBtn.setSize(340, 50);
           resetBtn.setLocation(100, 520);
-          resetBtn.addActionListener(new resetButtonListener());
+          resetBtn.addActionListener(this);
           container.add(resetBtn);
           
           notify = new JTextArea();
@@ -208,7 +202,7 @@ public class CustomerEditUI extends JFrame{
           searchBtn.setBackground(new Color(179, 179, 252));
           searchBtn.setSize(100, 30);
           searchBtn.setLocation(700, 440);
-          searchBtn.addActionListener(new searchButtonListener());
+          searchBtn.addActionListener(this);
           container.add(searchBtn);
           searchbar = new JTextField();
           searchbar.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -218,7 +212,7 @@ public class CustomerEditUI extends JFrame{
           container.add(searchbar);
           backIcon = new ImageIcon("icons/exit.png");
           backBtn= new JButton   ("", backIcon);
-          backBtn.addActionListener(new closeButtonListener());
+          backBtn.addActionListener(this);
           backBtn.setSize(100, 70);
           backBtn.setBackground(lpink);
           backBtn.setLocation(700, 500);
@@ -227,75 +221,56 @@ public class CustomerEditUI extends JFrame{
         setVisible(true);
     }
     
-    public class submitButtonListener implements ActionListener{
- 	   public void actionPerformed(ActionEvent e) {
- 		   String fName = fNameField.getText();
-            String lName = lNameField.getText();
-            String email = emailField.getText();
-            String pNum = pNumField.getText();
-            String address = addressField.getText();
-            int age = Integer.parseInt(ageField.getText());
-            String id = idField.getText();
-            notify.setText("");
-            
- 		   //control.createCustomer(fName, lName, age, address, pNum, email, id);
-            validList = new CustomerEditController().updateCustomer(fName, lName, age, address, pNum, email, id);
- 	   }
-    }
-    
-    public void resetFields() {
- 	   String blank ="";
-        fNameField.setText(blank);
-        lNameField.setText(blank);
-        emailField.setText(blank);
-        pNumField.setText(blank);
-        addressField.setText(blank);
-        ageField.setText(blank);
-        idField.setText(blank);
-    }
-    
-    public class resetButtonListener implements ActionListener{
- 	   public void actionPerformed(ActionEvent e) {
- 		   resetFields();
- 	   }
-    }
-    
-    public class searchButtonListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)//listener for Close button, initiates when button is clicked
-        {
-        	String id = searchbar.getText();
-            
-            if (id.isEmpty()){
-                notify.setText("Please enter the ID you would like to search.");
-            }
-            
-            else {
-              
-                String blank ="";
-                fNameField.setText(blank);
-                lNameField.setText(blank);
-                emailField.setText(blank);
-                pNumField.setText(blank);
-                addressField.setText(blank);
-                ageField.setText(blank);
-                idField.setText(blank);
-                
-                notify.setText(new CustomerEditController().findID(id));
-            }
-        }
-
-    }
-    
-    public class closeButtonListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)//listener for Close button, initiates when button is clicked
-        {
-        	MainMenu.createAndShowGUI();
+    public void actionPerformed(ActionEvent event){
+    	String oldid = searchbar.getText(), res ="";
+    	
+        if (event.getSource() == submitBtn){
+        	if (oldid.isEmpty()){
+        		notify.setText("Please search for the product you would like to edit.");
+        	}else { 
+        		valid = new CustomerEditController().updateCustomer(fNameField.getText(), 
+        				lNameField.getText(), ageField.getText(), addressField.getText(), pNumField.getText(), emailField.getText(), idField.getText(), oldid);
+        	    if(valid == false) {
+        	    	notify.setText("Something went wrong...");
+        	    }else{
+        	    	fNameField.setText(res);
+                    lNameField.setText(res);
+                    emailField.setText(res);
+                    pNumField.setText(res);
+                    addressField.setText(res);
+                    ageField.setText(res);
+                    idField.setText(res);   
+        	    }
+        	}
+        }else if (event.getSource() == resetBtn){
+        	fNameField.setText(res);
+            lNameField.setText(res);
+            emailField.setText(res);
+            pNumField.setText(res);
+            addressField.setText(res);
+            ageField.setText(res);
+            idField.setText(res); 
+        }else if (event.getSource() == backBtn){	
+            MainMenu.createAndShowGUI();
             container.setVisible(false);
             dispose();
+        }else{
+        
+        	if (oldid.isEmpty()){
+        		notify.setText("Please enter the ID you would like to search.");
+        	}else {
+        		fNameField.setText(res);
+                lNameField.setText(res);
+                emailField.setText(res);
+                pNumField.setText(res);
+                addressField.setText(res);
+                ageField.setText(res);
+                idField.setText(res); 
+            
+        		notify.setText(new CustomerEditController().findID(oldid));
+        		}
+        	
         }
-
     }
 
 }
