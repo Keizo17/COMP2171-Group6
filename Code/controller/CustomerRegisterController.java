@@ -11,17 +11,16 @@ public class CustomerRegisterController {
 	
 	private List<customerRecord> custList;
 	
-	public ArrayList<Boolean> createCustomer(String cFName, String cLName, int cAge, String cAddr, String cTelNum, String cEmail, String cID) {
+	public Boolean createCustomer(String cFName, String cLName, String cAge, String cAddr, String cTelNum, String cEmail, String cID) {
 		createCustList();
-		
-		this.customer = new customerRecord(cFName, cLName, cAge, cAddr, cTelNum, cEmail, cID);
+		this.customer = new customerRecord(cFName, cLName, Integer.parseInt(cAge), cAddr, cTelNum, cEmail, cID);
 		ArrayList<Boolean> valid = validateCustomer(customer);
 		
 		if (valid.contains(false)) {
-			return valid;
+			return false;
 		}else{
 			updateCustList();
-			return valid;
+			return true;
 			}
 		
 	}
@@ -38,7 +37,7 @@ public class CustomerRegisterController {
 		boolean dup = findDuplicate(customer.getID());
 		
 		if (dup == false) {
-			new CustomerList().saveToFile(customer);
+			new CustomerList().saveToFile(customer, -1);
 		}else {}
 	}
 	
