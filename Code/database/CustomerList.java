@@ -39,11 +39,24 @@ public class CustomerList{
         return custList;
     }
     
-    public void saveToFile(customerRecord customer) {
+    public void saveToFile(customerRecord customer, int index) {
+    	readFile();
+    	
     	try{
-    		BufferedWriter writer = new BufferedWriter(new FileWriter(custFile,true));
-    		writer.write(customer.getfName()+"!"+customer.getlName()+"!"+customer.getEmail()+"!"+customer.getPhone()+"!"+customer.getAddress()+"!"+customer.getAge()+"!"+customer.getID()+"\n");
-    		writer.close();
+    		if(index != -1) {
+    			BufferedWriter writer = new BufferedWriter(new FileWriter(custFile,false));
+        		custList.set(index, customer);
+        		custFile.delete();
+        		for (int i = 0; i < custList.size(); i++) {
+        			writer.write(custList.get(i).toString());
+        		}
+                writer.close();
+    		}else {
+    			BufferedWriter writer = new BufferedWriter(new FileWriter(custFile,true));
+    			writer.write(customer.getfName()+"!"+customer.getlName()+"!"+customer.getEmail()
+    						+"!"+customer.getPhone()+"!"+customer.getAddress()+"!"+customer.getAge()+"!"+customer.getID()+"\n");
+    			writer.close();
+    		}
     	}catch (Exception e) {}
     }
 }
