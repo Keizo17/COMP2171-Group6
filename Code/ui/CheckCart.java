@@ -253,6 +253,7 @@ public class CheckCart extends JFrame implements ActionListener {
                 //that array list is then added to another arrayList for calculations
                 //display the message when entries are added
                   String res ="";
+		  notify.setText("Product: "+Prod+"\n"+"Price: "+getProdPrice(Prod)+"\n"+"Quantity :"+Quan);
                   ArrayList<String> order = new ArrayList<>();
                   order.add(Prod);
                   order.add(Quan);
