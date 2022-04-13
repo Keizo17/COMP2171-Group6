@@ -13,25 +13,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import logic.DeliveryRecord;
+import logic.deliveryRecord;
 
 public class DeliveryScheduleEditUI extends JFrame{
-private JTextField  txtID;
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private JTextField  txtID;
     
-    private JButton     cmdUpdate;
     private JButton		cmdContinue;
     private JButton     cmdClose;
 
     private JPanel      pnlCommand;
     private JPanel      pnlDisplay;
     
-    private ArrayList<DeliveryRecord> schedlist;
+    private ArrayList<deliveryRecord> schedlist;
     
     private DeliveryScheduleUI listing;
     private DeliveryScheduleEditUI updateWin,updater;
     
   
-    public DeliveryScheduleEditUI(ArrayList<DeliveryRecord> schedlist, DeliveryScheduleUI listing)
+    public DeliveryScheduleEditUI(ArrayList<deliveryRecord> schedlist, DeliveryScheduleUI listing)
     {
     	updateWin = this;
         updateWin.setBounds(300, 160, 600, 200);
@@ -63,7 +67,7 @@ private JTextField  txtID;
 
     }
     
-    public DeliveryScheduleEditUI(int id,ArrayList<DeliveryRecord> schedlist, DeliveryScheduleUI listing) {
+    public DeliveryScheduleEditUI(int id,ArrayList<deliveryRecord> schedlist, DeliveryScheduleUI listing) {
     	int pdx = findDeliveryRecord(schedlist,id);
 		if (pdx>=0) {
 			schedlist.get(pdx).updateLocalData(pdx,updater,updateWin,listing,schedlist);
@@ -90,7 +94,7 @@ private JTextField  txtID;
 		}
     }
     
-    public int findDeliveryRecord(ArrayList<DeliveryRecord> schedlist, int delivId)
+    public int findDeliveryRecord(ArrayList<deliveryRecord> schedlist, int delivId)
 	{
 		int delivIdx =-1;
 		int currIdx=0;

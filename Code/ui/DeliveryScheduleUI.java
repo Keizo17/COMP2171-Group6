@@ -19,9 +19,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import logic.DeliveryRecord;
+import logic.deliveryRecord;
 
 public class DeliveryScheduleUI extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static JFrame	frame;
 	
 	private DecimalFormat df = new DecimalFormat("0.00");
@@ -34,15 +39,14 @@ public class DeliveryScheduleUI extends JPanel{
     private JButton     cmdSortOrderCost;
   
     private JPanel      pnlCommand;
-    private JPanel      pnlDisplay;
-    private ArrayList<DeliveryRecord> deliverylist;
+    private ArrayList<deliveryRecord> deliverylist;
     private DeliveryScheduleUI thisList;
     private JScrollPane scrollPane;
 
     private JTable table;
     private DefaultTableModel model;
     
-    File schedFile = new File("schedule.txt");
+    public File schedFile = new File("schedule.txt");
     //Creates a file object using a predetermined file
 
     public DeliveryScheduleUI() {
@@ -51,7 +55,7 @@ public class DeliveryScheduleUI extends JPanel{
         
         frame.setBounds(250, 150, 600, 200);
         pnlCommand = new JPanel();
-        pnlDisplay = new JPanel();
+        new JPanel();
 
         deliverylist= loadSchedule(schedFile);
         String[] columnNames=  {"ID#",
@@ -103,13 +107,13 @@ public class DeliveryScheduleUI extends JPanel{
         add(pnlCommand);
     }
 
-    private void showTable(ArrayList<DeliveryRecord> schedlist)
+    private void showTable(ArrayList<deliveryRecord> schedlist)
     {
     	for(int i = 0; i<schedlist.size(); i++) {
     		  addToTable(schedlist.get(i));
          }
     }
-    private void addToTable(DeliveryRecord d)
+    private void addToTable(deliveryRecord d)
     {
         String date= d.getDate();
         String address = d.getAddress();
@@ -134,9 +138,9 @@ public class DeliveryScheduleUI extends JPanel{
         
     }
 
-    private ArrayList<DeliveryRecord> loadSchedule(File schedFile) //Extracts data as an arraylist
+    private ArrayList<deliveryRecord> loadSchedule(File schedFile) //Extracts data as an arraylist
     {
-        ArrayList<DeliveryRecord> schedlist = new ArrayList<DeliveryRecord>();
+        ArrayList<deliveryRecord> schedlist = new ArrayList<deliveryRecord>();
         try
         {
         	Scanner dscan = new Scanner(schedFile);
@@ -147,7 +151,7 @@ public class DeliveryScheduleUI extends JPanel{
                 String address = nextLine[1];
                 int cusId = Integer.parseInt(nextLine[2]);
                 double orderCost = Double.parseDouble(nextLine[3]);
-                DeliveryRecord d = new DeliveryRecord(date, address,cusId , orderCost);
+                deliveryRecord d = new deliveryRecord(date, address,cusId , orderCost);
                 schedlist.add(d);
             }
 
@@ -203,20 +207,20 @@ public class DeliveryScheduleUI extends JPanel{
 
     }
     
-    public void refresh(ArrayList<DeliveryRecord> schedlist) {
+    public void refresh(ArrayList<deliveryRecord> schedlist) {
     	//method used to refresh the table after modifying it.
     	model.setRowCount(0);
-		for(DeliveryRecord d: schedlist) {
+		for(deliveryRecord d: schedlist) {
 			addToTable(d);
 		}
     }
 
 }
 
-class DeliveryDateSort implements Comparator<DeliveryRecord>{//used to help sort deliveries based on date
+class DeliveryDateSort implements Comparator<deliveryRecord>{//used to help sort deliveries based on date
 
 	@Override
-	public int compare(DeliveryRecord d1, DeliveryRecord d2) {
+	public int compare(deliveryRecord d1, deliveryRecord d2) {
 		String[] date1 = d1.getDate().split("-");
 		String[] date2  = d2.getDate().split("-");
 		if (date1[2] != date2[2]) {
@@ -232,10 +236,10 @@ class DeliveryDateSort implements Comparator<DeliveryRecord>{//used to help sort
 	
 }
 
-class CustomerIDSort implements Comparator<DeliveryRecord>{//used to help sort deliveries based on customer ID
+class CustomerIDSort implements Comparator<deliveryRecord>{//used to help sort deliveries based on customer ID
 
 	@Override
-	public int compare(DeliveryRecord d1, DeliveryRecord d2) {
+	public int compare(deliveryRecord d1, deliveryRecord d2) {
 		if (d1.getCusId()>d2.getCusId()) {
 			return 1;
 		}else {
@@ -249,10 +253,10 @@ class CustomerIDSort implements Comparator<DeliveryRecord>{//used to help sort d
 	
 }
 
-class OrderCostSort implements Comparator<DeliveryRecord>{//used to help sort deliveries based on order cost
+class OrderCostSort implements Comparator<deliveryRecord>{//used to help sort deliveries based on order cost
 
 	@Override
-	public int compare(DeliveryRecord d1, DeliveryRecord d2) {
+	public int compare(deliveryRecord d1, deliveryRecord d2) {
 		if (d1.getOrderCost()<d2.getOrderCost()) {
 			return 1;
 		}else {

@@ -10,6 +10,9 @@ import java.util.*;
 import java.util.List;
 import java.io.File;
 import javax.swing.*;
+
+import logic.productRecord;
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -50,7 +53,7 @@ public class CheckCart extends JFrame implements ActionListener {
       Color dblue2 = (new  Color(21, 21, 31));
       Color dpink = (new  Color(255, 30, 75));
       
-      ArrayList<ArrayList<String>> orderlst = new ArrayList<>();
+      ArrayList<ArrayList<String>> orderlst = new ArrayList<ArrayList<String>>();
 
       //Search
 
@@ -257,8 +260,6 @@ public class CheckCart extends JFrame implements ActionListener {
                   pquan.setText(res);
                   prod.setText(res);
                   JOptionPane.showMessageDialog(null, "Item successfully added to cart", "NOTICE", JOptionPane.INFORMATION_MESSAGE);
-
-
                 }
                 
 
@@ -311,8 +312,8 @@ public class CheckCart extends JFrame implements ActionListener {
                 String res ="";
                 try{
                     //not sure how to put the products name and quantity on the file as yet
-                    BufferedWriter writer = new BufferedWriter(new FileWriter(file,true));
-                    writer.write(pcusid.getText()+"!"+Itemscost);
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("Invoices.txt",true));
+                    writer.write(pcusid.getText()+"!"+Itemscost+"\n");
 
                     writer.close();
                 }catch(Exception e){return;}
@@ -415,16 +416,26 @@ public class CheckCart extends JFrame implements ActionListener {
         public Double OrderCalc(ArrayList<ArrayList<String>> cart){
             int i;
             //create an arrayList to only store the prices in 
-            ArrayList<Double> prices= new ArrayList<>();
+            ArrayList<Double> prices= new ArrayList<Double>();
+            ArrayList<String> pnamelst= new ArrayList<String>();
             Double DelvCost = 300.0;
             //goes through the list of arrays [[product,quantity],[product,quantity]]
             for(i=0;i<cart.size();i++){
-                String p = getProdPrice(cart.get(i).get(0)); //get String price of product 
+                ArrayList<String> stocks= new ArrayList<String>();//takes product name and quantity to be sold to update inventory
+                String productname = cart.get(i).get(0);
+                String p = getProdPrice(productname); //get String price of product 
                 Double price= Double.parseDouble(p);
                 Integer quan = Integer.parseInt(cart.get(i).get(1)); //get quantity of product
                 Double Itprice = quan*price; //total price of the item
+                stocks.add(productname);
+                stocks.add(cart.get(i).get(1));
                 prices.add(Itprice);
+                pnamelst.add(productname);
+                System.out.println(pnamelst);
+                updateInventory(stocks);
+                stocks.clear();
             }
+            System.out.println(pnamelst);
             Double pricebftx = LstCalc(prices); //sum of all prices in the cart
             if(Disc.isSelected()==true){
                 //if discount check box is selected, calculate discount which is 3%
@@ -476,9 +487,34 @@ public class CheckCart extends JFrame implements ActionListener {
                     lstproduct.add(line);
                     
                     String[] product = lstproduct.get(i).split("!");
-                    if(pro.equals(product[0])){
+                    if(pro.equalsIgnoreCase(product[0])){
                         String price = product[3];
                         return price;
+                        
+                    }
+                    i = i + 1;
+                }
+                return "Product does not exist!";
+                
+            }catch(Exception e){return "An Exception Happened";}
+            
+        }
+        public String getProdQuan(String pro){
+            //take a product name as the input, goes through the product file and get the price of the product inputted 
+            try{
+                BufferedReader reader = new BufferedReader(new FileReader("Products.txt"));
+                String line;
+                int i = 0;
+                List<String> lstproduct = new ArrayList<String>();
+    
+                while((line = reader.readLine()) != null){
+                    
+                    lstproduct.add(line);
+                    
+                    String[] product = lstproduct.get(i).split("!");
+                    if(pro.equals(product[0])){
+                        String quantity = product[4];
+                        return quantity;
                         
                     }
                     i = i + 1;
@@ -505,7 +541,7 @@ public class CheckCart extends JFrame implements ActionListener {
                     BufferedReader reader = new BufferedReader(new FileReader("Customers.txt"));
                     String line;
                     int i = 0;
-                    List<String> rdata = new ArrayList<String>();
+                    ArrayList<String> rdata = new ArrayList<String>();
         
                     while((line = reader.readLine()) != null){
                         
@@ -521,9 +557,78 @@ public class CheckCart extends JFrame implements ActionListener {
                 }catch(Exception e){return (false);}
             }
         
+        public  static ArrayList<String> getProductList(){
+                String readerline ;
+                ArrayList<String> productlist= new ArrayList<String>();
+                
+                try{
+                BufferedReader br = new BufferedReader(new FileReader("Products.txt"));
+        
+                    while( (readerline=br.readLine()) != null ){ 
+                                  
+                        if(readerline != null){ 
+                            productlist.add(readerline);
+                        }
+                    }
+                    br.close();
+                }catch(IOException e){
+                e.printStackTrace();
+                } 
+                return(productlist);
+            }
+        
+        
+        
+            
+        public static void updateDatabase(ArrayList<String> productList){
+                try{
+                    BufferedWriter bw = new BufferedWriter(new FileWriter("Products.txt"));
+                    for (String record :productList){
+                       // System.out.println(record);
+                        bw.write(record + "\n");
+                    }
+                    bw.close();
+                }catch(IOException e){
+                e.printStackTrace();   
+                }
+        
+            }
+
+        public void updateInventory(ArrayList<String> pro){
+            //take take  two inputs products name and quantity to be sold
+            ArrayList<String> products = new ArrayList<String>();
+
+            products = getProductList();
+            int i;
+            for(i=0; 1<products.size();i++){
+                String [] entries=products.get(i).split("!");
+                 String pname= entries[0];
+                 String pbrand= entries[1];
+                 String pdesc= entries[2];
+                 String pcost= entries [3]; 
+                 String pquan= entries[4];
+                 productRecord product = new productRecord(pname,pbrand,pdesc,Double.parseDouble(pcost),Integer.parseInt(pquan));
+                 
+                if (pro.get(0).equalsIgnoreCase(product.getProdname())){
+                    int stock= Integer.parseInt(pquan);
+                    int salequan= Integer.parseInt(pro.get(1));
+                    int newquan = stock-salequan;
+                    String newInv= Integer.toString(newquan);
+                    products.remove(i);
+                    String entry= pname+"!"+pbrand+"!"+pdesc+"!"+pcost+"!"+newInv;
+                    products.add(entry);
+                    System.out.println(entry);
+                    updateDatabase(products);
+                    break;
+                    
+                }
+            }
+
+        }        
+        
     
           
-          public  boolean isInt(String number ){
+        public  boolean isInt(String number ){
               
         	    try{
         	        Integer.parseInt(number);

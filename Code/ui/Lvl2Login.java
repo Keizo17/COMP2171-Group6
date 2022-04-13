@@ -1,4 +1,5 @@
 package ui;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.event.ActionListener;
@@ -21,13 +22,13 @@ public class Lvl2Login extends JFrame{
     Color dblue = (new  Color(10, 10, 15));
     Color dpink = (new  Color(255, 30, 75));
 
-    public Lvl2Login(){
+    Lvl2Login(){
         password = "lvl2";
         setTitle("Level 2");
         verify = new JPanel();
         pane = new JPanel();
         prompt = new JLabel("Enter the Level 2 Password:");
-        prompt.setForeground(Color.WHITE);
+        prompt.setForeground(dpink);
         pane.add(prompt); 
 
 
@@ -45,8 +46,8 @@ public class Lvl2Login extends JFrame{
         goBtn  = new JButton("Enter");
         returnBtn = new JButton("Return");
 
-        goBtn.setBackground(lpink);
-        returnBtn.setBackground(lpink);
+        goBtn.setBackground(dpink);
+        returnBtn.setBackground(dpink);
 
         verify.add(goBtn);
         verify.add(returnBtn);

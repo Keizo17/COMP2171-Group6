@@ -36,7 +36,7 @@ public class MainMenu extends JPanel{
     	
         pnlCommand = new JPanel();
         pnlDisplay = new JPanel();
-        pnlCommand.setPreferredSize(new Dimension(240,200));
+        pnlCommand.setPreferredSize(new Dimension(720,280));
         BoxLayout menuLayout = new BoxLayout(pnlCommand, BoxLayout.PAGE_AXIS);
         pnlCommand.setLayout(menuLayout);
         
@@ -44,7 +44,7 @@ public class MainMenu extends JPanel{
         cmdEditCustomer  = new JButton("Edit Customer Record");
         cmdAddProduct  = new JButton("Add New Product");
         cmdEditProduct  = new JButton("Edit Product Record");
-        //cmdProcessOrder  = new JButton("Process Orders");
+        cmdProcessOrder  = new JButton("Process Orders");
         cmdDeliverySchedule  = new JButton("View Delivery Schedule");
         cmdClose   = new JButton("Close");
 
@@ -53,7 +53,7 @@ public class MainMenu extends JPanel{
         cmdEditCustomer.addActionListener(new EditCustomerButtonListener());
         cmdAddProduct.addActionListener(new AddProductButtonListener());
         cmdEditProduct.addActionListener(new EditProductButtonListener());
-        //cmdProcessOrder.addActionListener(new ProcessOrderButtonListener());
+        cmdProcessOrder.addActionListener(new ProcessOrderButtonListener());
         cmdDeliverySchedule.addActionListener(new DeliveryScheduleButtonListener());
         cmdClose.addActionListener(new CloseButtonListener());
         
@@ -61,7 +61,7 @@ public class MainMenu extends JPanel{
         cmdEditCustomer.setBackground(Color.white);
         cmdAddProduct.setBackground(Color.white);
         cmdEditProduct.setBackground(Color.white);
-        //cmdProcessOrder.setBackground(Color.white);
+        cmdProcessOrder.setBackground(Color.white);
         cmdDeliverySchedule.setBackground(Color.white);
         cmdClose.setBackground(Color.red);
         pnlCommand.setBackground(Color.white);
@@ -71,15 +71,15 @@ public class MainMenu extends JPanel{
         pnlCommand.add(cmdEditCustomer);
         pnlCommand.add(cmdAddProduct);
         pnlCommand.add(cmdEditProduct);
-        //pnlCommand.add(cmdProcessOrder);
+        pnlCommand.add(cmdProcessOrder);
         pnlCommand.add(cmdDeliverySchedule);
         pnlCommand.add(cmdClose);
         
         ////
         
-        //ImageIcon logo = new ImageIcon("icons/logosmall.png");
-        //JLabel label = new JLabel("", logo, JLabel.NORTH_EAST);
-        //add(label);
+        ImageIcon logo = new ImageIcon("icons/logosmall.png");
+        JLabel label = new JLabel("", logo, JLabel.NORTH_EAST);
+        add(label);
         add(pnlCommand);
         add(pnlDisplay);
     }
@@ -135,7 +135,8 @@ public class MainMenu extends JPanel{
     
     public class ProcessOrderButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for ProcessOrder button, initiates when button is clicked
-    		//function_call();
+    		new CheckCart();
+    		frame.setVisible(false);
     	}
     }
     
