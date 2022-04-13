@@ -33,7 +33,6 @@ public class DeliveryScheduleUI extends JPanel{
 	
 	private JButton		cmdEditDelivery;
     private JButton     cmdClose;
-    private JButton     cmdSortDeliveryDate;
     private JButton     cmdSortAddress;
     private JButton     cmdSortCusId;
     private JButton     cmdSortOrderCost;
@@ -59,7 +58,6 @@ public class DeliveryScheduleUI extends JPanel{
 
         deliverylist= loadSchedule(schedFile);
         String[] columnNames=  {"ID#",
-        		"Delivery Date",
         		"Address",
         		"Customer ID#",
                 "Order Cost"};
@@ -76,21 +74,18 @@ public class DeliveryScheduleUI extends JPanel{
         add(scrollPane);
         
         cmdEditDelivery  = new JButton("Edit Delivery Record");
-        cmdSortDeliveryDate  = new JButton("Sort by Delivery Date");
         cmdSortAddress  = new JButton("Sort by Address");
         cmdSortCusId  = new JButton("Sort by Customer ID");
         cmdSortOrderCost  = new JButton("Sort by Order Cost");
         cmdClose   = new JButton("Close");
 
         cmdEditDelivery.addActionListener(new EditDeliveryButtonListener());
-        cmdSortDeliveryDate.addActionListener(new SortDeliveryDateButtonListener());
         cmdSortAddress.addActionListener(new SortAddressButtonListener());
         cmdSortCusId.addActionListener(new SortCustomerIDButtonListener());
         cmdSortOrderCost.addActionListener(new SortOrderCostButtonListener());
         cmdClose.addActionListener(new CloseButtonListener());
         
         cmdEditDelivery.setBackground(Color.yellow);
-        cmdSortDeliveryDate.setBackground(Color.white);
         cmdSortAddress.setBackground(Color.white);
         cmdSortCusId.setBackground(Color.white);
         cmdSortOrderCost.setBackground(Color.white);
@@ -98,7 +93,6 @@ public class DeliveryScheduleUI extends JPanel{
         pnlCommand.setBackground(Color.white);
         
         pnlCommand.add(cmdEditDelivery);
-        pnlCommand.add(cmdSortDeliveryDate);
         pnlCommand.add(cmdSortAddress);
         pnlCommand.add(cmdSortCusId);
         pnlCommand.add(cmdSortOrderCost);
@@ -115,9 +109,8 @@ public class DeliveryScheduleUI extends JPanel{
     }
     private void addToTable(deliveryRecord d)
     {
-        String date= d.getDate();
         String address = d.getAddress();
-        String[] item={""+ d.getId(), date, address,""+ d.getCusId(),"" + df.format(d.getOrderCost())};
+        String[] item={""+ d.getId(), address,""+ d.getCusId(),"" + df.format(d.getOrderCost())};
         model.addRow(item);        
 
     }
@@ -146,12 +139,11 @@ public class DeliveryScheduleUI extends JPanel{
         	Scanner dscan = new Scanner(schedFile);
             while(dscan.hasNextLine())
             {
-                String [] nextLine = dscan.nextLine().split(" ");
-                String date = nextLine[0];
-                String address = nextLine[1];
-                int cusId = Integer.parseInt(nextLine[2]);
-                double orderCost = Double.parseDouble(nextLine[3]);
-                deliveryRecord d = new deliveryRecord(date, address,cusId , orderCost);
+                String [] nextLine = dscan.nextLine().split("!");
+                String address = nextLine[0];
+                String cusId = nextLine[1];
+                double orderCost = Double.parseDouble(nextLine[2]);
+                deliveryRecord d = new deliveryRecord(address,cusId , orderCost);
                 schedlist.add(d);
             }
 
@@ -168,13 +160,6 @@ public class DeliveryScheduleUI extends JPanel{
     	}
     }
     
-    public class SortDeliveryDateButtonListener implements ActionListener{
-    	public void actionPerformed(ActionEvent e) {//listener for SortDeliveryDate button, initiates when button is clicked
-    		Collections.sort(deliverylist, new DeliveryDateSort());
-    		refresh(deliverylist);
-    	}
-    }
-    
     public class SortAddressButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for SortAddress button, initiates when button is clicked
     		Collections.sort(deliverylist);
@@ -184,7 +169,7 @@ public class DeliveryScheduleUI extends JPanel{
     
     public class SortCustomerIDButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for SortCustomerID button, initiates when button is clicked
-    		Collections.sort(deliverylist, new CustomerIDSort());
+    		Collections.sort(deliverylist);
     		refresh(deliverylist);
     	}
     }
@@ -217,37 +202,19 @@ public class DeliveryScheduleUI extends JPanel{
 
 }
 
-class DeliveryDateSort implements Comparator<deliveryRecord>{//used to help sort deliveries based on date
-
-	@Override
-	public int compare(deliveryRecord d1, deliveryRecord d2) {
-		String[] date1 = d1.getDate().split("-");
-		String[] date2  = d2.getDate().split("-");
-		if (date1[2] != date2[2]) {
-			return date1[2].compareTo(date2[2]);
-		}else if (date1[1] != date2[1]) {
-				return date1[1].compareTo(date2[1]);
-			}else if (date1[0] != date2[0]) {
-					return date1[0].compareTo(date2[0]);
-				}else {
-					return 0;
-				}
-	}
-	
-}
-
 class CustomerIDSort implements Comparator<deliveryRecord>{//used to help sort deliveries based on customer ID
 
 	@Override
 	public int compare(deliveryRecord d1, deliveryRecord d2) {
-		if (d1.getCusId()>d2.getCusId()) {
-			return 1;
-		}else {
-			if(d2.getCusId()>d1.getCusId()) {
-				return -1;
-			}else {
-				return 0;
-			}
+		int compare = d1.getCusId().compareTo(d2.getCusId());
+		if (compare < 0){
+		    return -1;
+		}
+		else if (compare > 0) {
+		    return 1;
+		}
+		else {
+		    return 0;
 		}
 	}
 	
