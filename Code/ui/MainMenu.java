@@ -1,4 +1,3 @@
-package ui;
 
 
 import java.awt.Color;
@@ -29,6 +28,7 @@ public class MainMenu extends JPanel{
     private JButton     cmdClose;
     
     private MainMenu	thisMainMenu;
+    private DeliverySchedule delivSched;
 
     public MainMenu() {
     	super(new GridLayout(2,1));
@@ -84,7 +84,7 @@ public class MainMenu extends JPanel{
         add(pnlDisplay);
     }
     
-    static void createAndShowGUI() {
+    public static void createAndShowGUI() {
         //Create and set up the window.
         frame = new JFrame("T'Curly Manager Main Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -101,48 +101,48 @@ public class MainMenu extends JPanel{
     }
     
     public static void main(String[] args) {
-        //new EntryScreen();
-    	createAndShowGUI();
+        new EntryScreen();
+        //AddProduct ap = new AddProduct();
+        //Product p = AddProduct.A
     }
     
     public class AddCustomerButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) { //listener for AddCustomer button, initiates when button is clicked
-    		new CustomerRegisterUI().addCustomerUI();
+    		new AddCustomer().RegisterCustomer();
             frame.setVisible(false);
     	}
     }
     
     public class EditCustomerButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for EditCustomer button, initiates when button is clicked
-    		new CustomerEditUI().findCustomer();
-    		frame.setVisible(false);
+    		//function_call();
     	}
     }
     
     public class AddProductButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for AddProductMethod button, initiates when button is clicked
-    		new ProductRegisterUI().registerProduct();
-    		frame.setVisible(false);
+    		new AddProduct();
+            frame.setVisible(false);
     	}
     }
     
     public class EditProductButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for EditProduct button, initiates when button is clicked
-    		new ProductEditUI().findProduct();
-    		frame.setVisible(false);
+    		new EditProduct();
+		    frame.setVisible(false);
     	}
     }
     
     public class ProcessOrderButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for ProcessOrder button, initiates when button is clicked
-    		new CheckCart();
-    		frame.setVisible(false);
+    		//function_call();
     	}
     }
     
     public class DeliveryScheduleButtonListener implements ActionListener{
     	public void actionPerformed(ActionEvent e) {//listener for DeliverySchedule button, initiates when button is clicked
-    		DeliveryScheduleUI.createAndShowGUI();
+    		
+    		DeliverySchedule.createAndShowGUI();
     		frame.setVisible(false);
     	}
     }
